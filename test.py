@@ -1,7 +1,6 @@
-input_string = "value,humor"
+user_input = "tag:"
 
-# Split the string by comma
-result_list = input_string.split(",")
+input_parameter = user_input.split(":")[1].strip()
 
-# Display the resulting list
-print(result_list)
+
+print(f"input param is: {input_parameter}")
