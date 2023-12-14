@@ -1,6 +1,4 @@
 from models import Author, Quote
-
-# from connect import db
 from connection_code import connect
 import json
 
