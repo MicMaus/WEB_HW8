@@ -1,7 +1,7 @@
 from producer import Contact
 import pika
 from mongoengine import connect
-import sys
+import sys, os
 import json
 
 # MongoDB connection:
@@ -48,7 +48,6 @@ def main():
     channel.basic_consume(
         queue="contacts_queue", on_message_callback=callback, auto_ack=True
     )
-
     print("Waiting for messages. To exit press CTRL+C")
     channel.start_consuming()
 
@@ -58,4 +57,7 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("Message sending was interrupted")
-        sys.exit(0)
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
