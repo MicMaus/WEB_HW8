@@ -1,23 +1,35 @@
-from models import Author, Quote
 from connection_code import connect
+from models import Author, Quote
 import json
+import redis
+from redis_lru import RedisLRU
+from datetime import datetime
 
 
 connect
 
+client = redis.StrictRedis(host="localhost", port=6379, password=None)
+cache = RedisLRU(client)
 
-def search_all():
+
+@cache
+def search_all(k):
+    start = datetime.now()
     quotes = Quote.objects()
+    end = datetime.now()
+    print(end - start)
     return quotes
 
 
 # all quotes of the author:
+@cache
 def author_search(author_to_search):
     quotes = Quote.objects(Author.fullname == author_to_search)
     return quotes
 
 
 # quotes with 1 tag:
+@cache
 def tag_search(tag_to_search):
     quotes = Quote.objects(tags__contains=tag_to_search)
     return quotes
@@ -57,6 +69,7 @@ commands = {
     "name": author_search,
     "tag": tag_search,
     "tags": multi_tag_search,
+    "all": search_all,
 }
 #########################################################################
 
