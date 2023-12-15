@@ -12,6 +12,7 @@ client = redis.StrictRedis(host="localhost", port=6379, password=None)
 cache = RedisLRU(client)
 
 
+# for testing purposes only:
 @cache
 def search_all(k):
     start = datetime.now()
